@@ -1,0 +1,1 @@
+psql -d postgres -h localhost -p 5432 -U postgres -w -f poc-create-schema.sql -o poc-create-schema.log
