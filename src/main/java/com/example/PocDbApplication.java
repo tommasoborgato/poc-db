@@ -1,10 +1,9 @@
 package com.example;
 
-import com.example.entity.Node;
-import com.example.entity.NodeRepository;
+import com.example.postgres.PostgresNode;
+import com.example.postgres.PostgresNodeRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
@@ -25,10 +24,10 @@ public class PocDbApplication {
 
 	@Bean
 	CommandLineRunner runner(
-			NodeRepository nr
+			PostgresNodeRepository nr
 	) {
 		return args -> {
-			Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> nr.save(new Node(n)));
+			Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> nr.save(new PostgresNode(n)));
 			System.out.println("=================== FIND ALL =============================");
 			nr.findAll().forEach(System.out::println);
 		};

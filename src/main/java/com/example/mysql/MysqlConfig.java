@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.example.mysql;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,28 +17,28 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "postgresEntityManager",
-        transactionManagerRef = "postgresTransactionManager"
+        entityManagerFactoryRef = "mysqlEntityManager",
+        transactionManagerRef = "mysqlTransactionManager"
 )
 @EnableTransactionManagement
-public class PostgresConfig {
+public class MysqlConfig {
 
     @Autowired
     private Environment env;
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean postgresEntityManager() {
+    public LocalContainerEntityManagerFactoryBean mysqlEntityManager() {
         LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setPersistenceUnitName("postgres-pu");
+        em.setPersistenceUnitName("mysql-pu");
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         em.setJpaVendorAdapter(vendorAdapter);
         return em;
     }
 
     @Bean
-    public PlatformTransactionManager postgresTransactionManager() {
+    public PlatformTransactionManager mysqlTransactionManager() {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(postgresEntityManager().getObject());
+        transactionManager.setEntityManagerFactory(mysqlEntityManager().getObject());
         return transactionManager;
     }
 

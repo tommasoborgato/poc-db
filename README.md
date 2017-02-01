@@ -43,6 +43,11 @@ per connettersi al DB installare pgadmin (localhost:5432 postgres/admin)
 C:\sviluppo\mysql-5.7.17-winx64                                                                         <BR>
 Size 1.8 GB                                                                                             <BR>
 "MySQL Community Edition" GPL license : you can sell it under GPL as long as you give all source code   <BR>
+per inizializzare il database:
+    ./Mysql/poc-initdb.bat
+    => crea il folder ./Mysql/data                                                                      <BR>
+per connettersi al DB installare MySQL Workbench (localhost:3306 root/admin)                            <BR>
+con "show databases;" vedi i database e c'e' mysql gia' pronto
 </p>
 
 

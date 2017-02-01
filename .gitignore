@@ -26,3 +26,7 @@ nbdist/
 ### Postgres ###
 Postgres/data
 Postgres/log/*
+
+### Mysql ###
+Mysql/data
+Mysql/log/*

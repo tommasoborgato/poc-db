@@ -1,0 +1,1 @@
+C:\sviluppo\mysql-5.7.17-winx64\bin\mysqld --datadir=C:\progetti\workspace_poc\poc-db\Mysql\data --general-log-file=C:\progetti\workspace_poc\poc-db\Mysql\log\mysql.log

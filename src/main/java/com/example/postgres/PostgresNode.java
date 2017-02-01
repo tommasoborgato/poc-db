@@ -1,4 +1,4 @@
-package com.example.entity;
+package com.example.postgres;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,7 +8,7 @@ import javax.persistence.Id;
  * Created by icttb0 on 20/01/2017.
  */
 @Entity
-public class Node {
+public class PostgresNode {
 
     @Id
     @GeneratedValue
@@ -16,10 +16,10 @@ public class Node {
 
     private String name;
 
-    public Node() {
+    public PostgresNode() {
     }
 
-    public Node(String name) {
+    public PostgresNode(String name) {
         this.name = name;
     }
 
@@ -41,7 +41,7 @@ public class Node {
 
     @Override
     public String toString() {
-        return "Node{" +
+        return "PostgresNode{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
