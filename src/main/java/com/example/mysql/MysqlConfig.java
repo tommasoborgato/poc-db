@@ -32,6 +32,7 @@ import java.util.HashMap;
 public class MysqlConfig {
 
     private static final boolean USE_PESISTENCE_FILE = false;
+
     @Autowired
     private Environment env;
 
@@ -52,7 +53,7 @@ public class MysqlConfig {
         } else {
             LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
             em.setDataSource(mySqlDataSource());
-            em.setPackagesToScan(new String[] { "com.example.mysql" });
+            em.setPackagesToScan(new String[] { env.getProperty("mysql.hibernate.packages_to_scan") });
 
             HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
             em.setJpaVendorAdapter(vendorAdapter);

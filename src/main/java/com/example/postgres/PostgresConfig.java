@@ -15,6 +15,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 
 /**
  * Created by icttb0 on 24/01/2017.
@@ -29,23 +30,43 @@ import javax.sql.DataSource;
 @PropertySource({ "classpath:postgres.properties" })
 public class PostgresConfig {
 
+    private static final boolean USE_PESISTENCE_FILE = false;
+
     @Autowired
     private Environment env;
 
-    /*@Bean
+    @Bean("postgresDataSource")
     @ConfigurationProperties(prefix="postgres.datasource")
-    public DataSource dataSource() {
+    public DataSource postgresDataSource() {
         return DataSourceBuilder.create().build();
-    }*/
+    }
 
 
     @Bean
     public LocalContainerEntityManagerFactoryBean postgresEntityManager() {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setPersistenceUnitName("postgres-pu");
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
-        return em;
+        if (USE_PESISTENCE_FILE) {
+            LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+            em.setPersistenceUnitName("postgres-pu");
+            HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+            em.setJpaVendorAdapter(vendorAdapter);
+            return em;
+        }else{
+
+            LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+            em.setDataSource(postgresDataSource());
+            em.setPackagesToScan(new String[] { env.getProperty("postgres.hibernate.packages_to_scan") });
+
+            HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+            em.setJpaVendorAdapter(vendorAdapter);
+            HashMap<String, Object> properties = new HashMap<String, Object>();
+            properties.put("hibernate.archive.autodetection", env.getProperty("postgres.hibernate.archive.autodetection"));
+            properties.put("hibernate.hbm2ddl.auto", env.getProperty("postgres.hibernate.hbm2ddl.auto"));
+            properties.put("hibernate.dialect", env.getProperty("postgres.hibernate.dialect"));
+            properties.put("hibernate.default_schema", env.getProperty("postgres.hibernate.default_schema"));
+            em.setJpaPropertyMap(properties);
+
+            return em;
+        }
     }
 
     @Bean

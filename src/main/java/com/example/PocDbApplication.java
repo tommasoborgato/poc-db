@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Arrays;
+import java.util.Date;
 
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class,
 		DataSourceTransactionManagerAutoConfiguration.class })
@@ -30,12 +31,37 @@ public class PocDbApplication {
 			MysqlNodeRepository mnr
 	) {
 		return args -> {
-			Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> pnr.save(new PostgresNode(n)));
-			System.out.println("=================== FIND ALL =============================");
-			pnr.findAll().forEach(System.out::println);
+
+			/* Postgres */
+			System.out.println("=================== Postgres INS ALL =============================");
+			Date date1= new Date();
+			for (int i = 1; i<1000000; i++){
+				pnr.save(new PostgresNode("node"+i));
+			}
+			//Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> pnr.save(new PostgresNode(n)));
+			Date date2= new Date();
+			System.out.println("Postgres INSERT" + new Date((date2.getTime()-date1.getTime())) );
+
+			System.out.println("=================== Postgres FIND ALL =============================");
+			pnr.findAll(); //.forEach(System.out::println);
+			Date date3 = new Date();
+			System.out.println("Postgres SELECT" + new Date((date3.getTime()-date2.getTime())) );
+
+			/* MySQL */
+			System.out.println("=================== Mysql INS ALL =============================");
+			Date date4= new Date();
+			for (int i = 1; i<1000000; i++){
+				mnr.save(new MysqlNode("node"+i));
+			}
 			Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> mnr.save(new MysqlNode(n)));
-			System.out.println("=================== FIND ALL =============================");
-			mnr.findAll().forEach(System.out::println);
+			Date date5= new Date();
+			System.out.println("Mysql INSERT" + new Date((date5.getTime()-date4.getTime())) );
+
+			System.out.println("=================== Mysql FIND ALL =============================");
+			mnr.findAll(); //.forEach(System.out::println);
+			Date date6= new Date();
+			System.out.println("Mysql SELECT" + new Date((date5.getTime()-date6.getTime())) );
+
 		};
 	}
 }
