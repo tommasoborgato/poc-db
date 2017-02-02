@@ -17,7 +17,7 @@
         </properties>
     </persistence-unit>
 
-    <persistence-unit name="mysql-pu" transaction-type="RESOURCE_LOCAL">
+    <!--<persistence-unit name="mysql-pu" transaction-type="RESOURCE_LOCAL">
         <class>com.example.mysql.MysqlNode</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
@@ -29,6 +29,6 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
             <property name="hibernate.archive.autodetection" value="" />
         </properties>
-    </persistence-unit>
+    </persistence-unit>-->
 
 </persistence>
