@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.mysql.MysqlNode;
+import com.example.mysql.MysqlNodeRepository;
 import com.example.postgres.PostgresNode;
 import com.example.postgres.PostgresNodeRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -24,12 +26,16 @@ public class PocDbApplication {
 
 	@Bean
 	CommandLineRunner runner(
-			PostgresNodeRepository nr
+			PostgresNodeRepository pnr,
+			MysqlNodeRepository mnr
 	) {
 		return args -> {
-			Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> nr.save(new PostgresNode(n)));
+			Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> pnr.save(new PostgresNode(n)));
 			System.out.println("=================== FIND ALL =============================");
-			nr.findAll().forEach(System.out::println);
+			pnr.findAll().forEach(System.out::println);
+			Arrays.asList("node1,node2,node3,node4,node5,node6".split(",")).forEach(n -> mnr.save(new MysqlNode(n)));
+			System.out.println("=================== FIND ALL =============================");
+			mnr.findAll().forEach(System.out::println);
 		};
 	}
 }

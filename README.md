@@ -47,7 +47,8 @@ per inizializzare il database:
     ./Mysql/poc-initdb.bat
     => crea il folder ./Mysql/data                                                                      <BR>
 per connettersi al DB installare MySQL Workbench (localhost:3306 root/admin)                            <BR>
-con "show databases;" vedi i database e c'e' mysql gia' pronto
+con "show databases;" vedi i database e c'e' mysql gia' pronto                                          <BR>
+In MySQL, databases and schemas are synonyms                                                            <BR>
 </p>
 
 
