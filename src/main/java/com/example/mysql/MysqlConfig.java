@@ -1,6 +1,5 @@
 package com.example.mysql;
 
-import com.example.postgres.PostgresNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -54,7 +53,6 @@ public class MysqlConfig {
             LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
             em.setDataSource(mySqlDataSource());
             em.setPackagesToScan(new String[] { env.getProperty("mysql.hibernate.packages_to_scan") });
-
             HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
             em.setJpaVendorAdapter(vendorAdapter);
             HashMap<String, Object> properties = new HashMap<String, Object>();
@@ -62,8 +60,8 @@ public class MysqlConfig {
             properties.put("hibernate.hbm2ddl.auto", env.getProperty("mysql.hibernate.hbm2ddl.auto"));
             properties.put("hibernate.dialect", env.getProperty("mysql.hibernate.dialect"));
             properties.put("hibernate.default_schema", env.getProperty("mysql.hibernate.default_schema"));
+            em.setPersistenceUnitName( env.getProperty("mysql.persistence_unit_name") );
             em.setJpaPropertyMap(properties);
-
             return em;
         }
     }

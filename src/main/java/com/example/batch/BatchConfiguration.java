@@ -1,5 +1,7 @@
 package com.example.batch;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepContribution;
@@ -26,6 +28,7 @@ import java.sql.SQLException;
 @EnableBatchProcessing
 public class BatchConfiguration
 {
+    private static final Logger log = LoggerFactory.getLogger(BatchConfiguration.class);
 
     @Autowired
     private JobBuilderFactory jobs;
@@ -50,23 +53,56 @@ public class BatchConfiguration
     }
 
     @Bean
-    protected Tasklet tasklet() {
+    protected Tasklet taskletPostgres() {
         return new Tasklet() {
             @Override
             public RepeatStatus execute(StepContribution contribution,
                                         ChunkContext context) {
+                log.info("================================================================");
+                log.info("taskletPostgres");
+                log.info("================================================================");
                 return RepeatStatus.FINISHED;
             }
         };
     }
 
     @Bean
-    public Job job() throws Exception {
-        return this.jobs.get("job").start(step1()).build();
+    protected Tasklet taskletMysql() {
+        return new Tasklet() {
+            @Override
+            public RepeatStatus execute(StepContribution contribution,
+                                        ChunkContext context) {
+                log.info("================================================================");
+                log.info("taskletMysql");
+                log.info("================================================================");
+                return RepeatStatus.FINISHED;
+            }
+        };
     }
 
     @Bean
-    protected Step step1() throws Exception {
-        return this.steps.get("step1").tasklet(tasklet()).build();
+    public JobCompletionNotificationListener getJobCompletionNotificationListener() {
+        return new JobCompletionNotificationListener();
     }
+
+    @Bean
+    public Job jobPostgres(JobCompletionNotificationListener listener) throws Exception {
+        return this.jobs.get("job-postgres").listener(listener).start(stepPostgres()).build();
+    }
+
+    @Bean
+    public Job jobMysql(JobCompletionNotificationListener listener) throws Exception {
+        return this.jobs.get("job-mysql").listener(listener).start(stepMysql()).build();
+    }
+
+    @Bean
+    protected Step stepPostgres() throws Exception {
+        return this.steps.get("step-postgres").tasklet(taskletPostgres()).build();
+    }
+
+    @Bean
+    protected Step stepMysql() throws Exception {
+        return this.steps.get("step-mysql").tasklet(taskletMysql()).build();
+    }
+
 }

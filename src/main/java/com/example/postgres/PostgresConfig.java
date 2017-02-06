@@ -55,7 +55,6 @@ public class PostgresConfig {
             LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
             em.setDataSource(postgresDataSource());
             em.setPackagesToScan(new String[] { env.getProperty("postgres.hibernate.packages_to_scan") });
-
             HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
             em.setJpaVendorAdapter(vendorAdapter);
             HashMap<String, Object> properties = new HashMap<String, Object>();
@@ -63,8 +62,8 @@ public class PostgresConfig {
             properties.put("hibernate.hbm2ddl.auto", env.getProperty("postgres.hibernate.hbm2ddl.auto"));
             properties.put("hibernate.dialect", env.getProperty("postgres.hibernate.dialect"));
             properties.put("hibernate.default_schema", env.getProperty("postgres.hibernate.default_schema"));
+            em.setPersistenceUnitName( env.getProperty("postgres.persistence_unit_name") );
             em.setJpaPropertyMap(properties);
-
             return em;
         }
     }
